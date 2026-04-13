@@ -1,0 +1,101 @@
+:root {
+    /* Color Palette */
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #12121a;
+    --bg-tertiary: #1a1a25;
+    
+    /* Accent Colors - Used selectively per screen */
+    --accent-cyan: #00f0ff;
+    --accent-cyan-dim: rgba(0, 240, 255, 0.3);
+    --accent-cyan-glow: rgba(0, 240, 255, 0.15);
+    
+    --accent-yellow: #ffd700;
+    --accent-yellow-dim: rgba(255, 215, 0, 0.3);
+    --accent-yellow-glow: rgba(255, 215, 0, 0.15);
+    
+    --accent-red: #ff3b3b;
+    --accent-red-dim: rgba(255, 59, 59, 0.3);
+    --accent-red-glow: rgba(255, 59, 59, 0.15);
+    
+    /* Text Colors */
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0b0;
+    --text-muted: #6a6a7a;
+    
+    /* Glassmorphism */
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-bg-hover: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-border-hover: rgba(255, 255, 255, 0.2);
+    --glass-blur: 20px;
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    
+    /* Typography */
+    --font-heading: 'Orbitron', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    
+    /* Font Sizes */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.25rem;
+    --text-xl: 1.5rem;
+    --text-2xl: 2rem;
+    --text-3xl: 2.5rem;
+    --text-4xl: 3.5rem;
+    --text-5xl: 4.5rem;
+    
+    /* Spacing */
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 2rem;
+    --space-lg: 3rem;
+    --space-xl: 4rem;
+    --space-2xl: 6rem;
+    --space-3xl: 8rem;
+    
+    /* Borders & Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    --transition-slower: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Z-Index Scale */
+    --z-base: 1;
+    --z-particles: 5;
+    --z-overlay: 100;
+    --z-modal: 200;
+    --z-max: 999;
+    
+    /* Particle effects */
+    --particle-color: rgba(0, 240, 255, 0.4);
+    
+    /* Scan lines */
+    --scan-line-color: rgba(0, 240, 255, 0.03);
+    
+    /* Glitch colors */
+    --glitch-cyan: #00f0ff;
+    --glitch-red: #ff0040;
+    
+    /* Noise texture */
+    --noise-opacity: 0.015;
+    
+    /* Matrix Effect */
+    --matrix-green: #00ff41;
+    --matrix-green-dim: rgba(0, 255, 65, 0.3);
+    --matrix-glow: rgba(0, 255, 65, 0.6);
+    
+    /* Tech Grid */
+    --grid-color: rgba(0, 240, 255, 0.05);
+    --grid-size: 50px;
+    
+    /* Terminal */
+    --terminal-bg: rgba(0, 0, 0, 0.85);
+    --terminal-text: #00ff41;
+}

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroQuest - Chatbot Training Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 36px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .stat-card .value {
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #666;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .unanswered-list {
+            max-height: 400px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .unanswered-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .unanswered-item .question {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .unanswered-item .meta {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .test-chat {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 300px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .chat-message {
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 80%;
+        }
+
+        .chat-message.user {
+            background: #667eea;
+            color: white;
+            margin-left: auto;
+        }
+
+        .chat-message.bot {
+            background: white;
+            border: 2px solid #667eea;
+            color: #333;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            color: #155724;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>🎓 NeuroQuest Training Dashboard</h1>
+        <p class="subtitle">Train your AI chatbot with custom knowledge</p>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Conversations</h3>
+                <div class="value" id="totalConversations">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Unanswered Questions</h3>
+                <div class="value" id="unansweredCount">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Knowledge Base Size</h3>
+                <div class="value" id="kbSize">0</div>
+            </div>
+        </div>
+
+        <!-- Add Knowledge Form -->
+        <div class="section">
+            <h2>📚 Add New Knowledge</h2>
+            <div id="addAlert"></div>
+            
+            <div class="form-group">
+                <label>Subject</label>
+                <select id="subject">
+                    <option value="math">📐 Mathematics</option>
+                    <option value="science">🔬 Science</option>
+                    <option value="english">📝 English</option>
+                    <option value="coding">💻 Coding</option>
+                    <option value="gk">🌍 General Knowledge</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Student Level</label>
+                <select id="level">
+                    <option value="nursery_to_2">🌱 Nursery - Class 2</option>
+                    <option value="elementary_3_to_5">📖 Class 3 - 5</option>
+                    <option value="middle_6_to_8">📘 Class 6 - 8</option>
+                    <option value="high_9_to_12">🎓 Class 9 - 12</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Question (Keywords)</label>
+                <input type="text" id="question" placeholder="e.g., what is photosynthesis">
+            </div>
+
+            <div class="form-group">
+                <label>Answer (Your trained response)</label>
+                <textarea id="answer" placeholder="Type your detailed answer here..."></textarea>
+            </div>
+
+            <button class="btn btn-success" onclick="addKnowledge()">✅ Add to Knowledge Base</button>
+            <button class="btn btn-secondary" onclick="clearForm()">🔄 Clear Form</button>
+        </div>
+
+        <!-- Unanswered Questions -->
+        <div class="section">
+            <h2>❓ Unanswered Questions (Needs Training)</h2>
+            <div class="alert alert-info">
+                These are questions users asked that the chatbot couldn't answer. Train your bot by adding answers for these!
+            </div>
+            <div class="unanswered-list" id="unansweredList">
+                <p style="text-align: center; color: #999;">No unanswered questions yet!</p>
+            </div>
+        </div>
+
+        <!-- Test Chat -->
+        <div class="section">
+            <h2>🧪 Test Your Chatbot</h2>
+            <div class="alert alert-info">
+                Test how your trained chatbot responds to questions
+            </div>
+            <div class="test-chat" id="testChat">
+                <div class="chat-message bot">
+                    Hi! I'm your trained academic chatbot. Ask me anything! 🎓
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="testInput" placeholder="Type a question to test...">
+                <button class="btn" onclick="testChatbot()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load the academic knowledge base and engine -->
+    <script src="js/academic-knowledge-base.js"></script>
+    <script src="js/academic-chatbot-engine.js"></script>
+    
+    <script>
+        // Update stats
+        function updateStats() {
+            const stats = window.academicBot.getStats();
+            document.getElementById('totalConversations').textContent = stats.totalConversations;
+            document.getElementById('unansweredCount').textContent = stats.unansweredQuestions;
+            
+            // Calculate knowledge base size
+            let kbSize = 0;
+            for (const subject in ACADEMIC_KNOWLEDGE_BASE) {
+                for (const level in ACADEMIC_KNOWLEDGE_BASE[subject]) {
+                    kbSize += Object.keys(ACADEMIC_KNOWLEDGE_BASE[subject][level]).length;
+                }
+            }
+            document.getElementById('kbSize').textContent = kbSize;
+        }
+
+        // Display unanswered questions
+        function displayUnanswered() {
+            const unanswered = window.academicBot.getUnansweredQuestions(20);
+            const container = document.getElementById('unansweredList');
+            
+            if (unanswered.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999;">No unanswered questions yet!</p>';
+                return;
+            }
+
+            container.innerHTML = unanswered.map(q => `
+                <div class="unanswered-item">
+                    <div class="question">"${q.question}"</div>
+                    <div class="meta">
+                        📂 ${q.subject} | 🕒 ${new Date(q.timestamp).toLocaleString()} | 
+                        <button onclick="quickTrain('${q.question.replace(/'/g, "\\'")}')" style="cursor: pointer; background: #667eea; color: white; border: none; padding: 4px 12px; border-radius: 5px;">
+                            Train Now
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Quick train from unanswered list
+        function quickTrain(question) {
+            document.getElementById('question').value = question;
+            document.getElementById('answer').focus();
+            window.scrollTo(0, 0);
+        }
+
+        // Add knowledge
+        function addKnowledge() {
+            const subject = document.getElementById('subject').value;
+            const level = document.getElementById('level').value;
+            const question = document.getElementById('question').value.trim();
+            const answer = document.getElementById('answer').value.trim();
+
+            if (!question || !answer) {
+                showAlert('Please fill in both question and answer!', 'error');
+                return;
+            }
+
+            // Add to knowledge base
+            window.academicBot.addKnowledge(subject, level, question, answer);
+            
+            // Also add to the actual knowledge base object
+            if (!ACADEMIC_KNOWLEDGE_BASE[subject]) {
+                ACADEMIC_KNOWLEDGE_BASE[subject] = {};
+            }
+            if (!ACADEMIC_KNOWLEDGE_BASE[subject][level]) {
+                ACADEMIC_KNOWLEDGE_BASE[subject][level] = {};
+            }
+            ACADEMIC_KNOWLEDGE_BASE[subject][level][question.toLowerCase()] = answer;
+
+            showAlert('✅ Knowledge added successfully! The chatbot can now answer this question.', 'success');
+            clearForm();
+            updateStats();
+        }
+
+        // Test chatbot
+        async function testChatbot() {
+            const input = document.getElementById('testInput');
+            const question = input.value.trim();
+            
+            if (!question) return;
+
+            const chatContainer = document.getElementById('testChat');
+            
+            // Add user message
+            chatContainer.innerHTML += `
+                <div class="chat-message user">${question}</div>
+            `;
+
+            // Get bot response
+            const response = await window.academicBot.getResponse(question);
+            
+            // Add bot response
+            chatContainer.innerHTML += `
+                <div class="chat-message bot">${response.replace(/\n/g, '<br>')}</div>
+            `;
+
+            // Scroll to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            input.value = '';
+        }
+
+        // Clear form
+        function clearForm() {
+            document.getElementById('question').value = '';
+            document.getElementById('answer').value = '';
+        }
+
+        // Show alert
+        function showAlert(message, type) {
+            const container = document.getElementById('addAlert');
+            container.innerHTML = `
+                <div class="alert alert-${type === 'success' ? 'success' : 'info'}">
+                    ${message}
+                </div>
+            `;
+            setTimeout(() => container.innerHTML = '', 5000);
+        }
+
+        // Enter key support
+        document.getElementById('testInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') testChatbot();
+        });
+
+        // Initialize
+        updateStats();
+        displayUnanswered();
+        
+        console.log('🎓 Training Dashboard loaded successfully!');
+    </script>
+</body>
+</html>
