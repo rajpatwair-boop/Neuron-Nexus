@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NeuroQuest - Simple Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #00ff88;
+        }
+        .test { 
+            background: #1a1a1a; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px;
+            border-left: 4px solid #00ff88;
+        }
+        .error { 
+            border-left-color: #ff4444; 
+            color: #ff4444; 
+        }
+        .success { 
+            border-left-color: #00ff88; 
+            color: #00ff88; 
+        }
+        .warning {
+            border-left-color: #ffaa00;
+            color: #ffaa00;
+        }
+        button {
+            background: #00ff88;
+            color: #0a0a0a;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #00cc6a;
+        }
+        h1 { color: #00ff88; }
+        h2 { color: #00ccff; }
+    </style>
+</head>
+<body>
+    <h1>🧠 NeuroQuest - Simple Diagnostic Test</h1>
+    <p style="color: #888;">This page will test if your website files are working correctly.</p>
+    
+    <div id="results"></div>
+    
+    <div style="margin-top: 30px; padding: 20px; background: #1a1a1a; border-radius: 5px;">
+        <h2>Quick Actions:</h2>
+        <button onclick="testSimple()">✅ Test Simple HTML</button>
+        <button onclick="testJS()">📜 Test JavaScript</button>
+        <button onclick="testKnowledge()">📚 Test Knowledge Base</button>
+        <button onclick="testBot()">🤖 Test Chatbot</button>
+        <button onclick="openMain()">🚀 Open Main Page</button>
+        <button onclick="showInfo()">ℹ️ Show Browser Info</button>
+    </div>
+
+    <script>
+        const results = document.getElementById('results');
+        
+        function addResult(message, type = 'success') {
+            const div = document.createElement('div');
+            div.className = `test ${type}`;
+            div.innerHTML = message;
+            results.appendChild(div);
+            console.log(message);
+        }
+
+        function testSimple() {
+            results.innerHTML = '';
+            addResult('✅ Simple HTML test PASSED - Browser is working!');
+            addResult('📝 If you can read this, your browser can display HTML.');
+        }
+
+        function testJS() {
+            results.innerHTML = '';
+            addResult('✅ JavaScript is ENABLED in your browser');
+            addResult('📝 Version: ECMAScript ' + (typeof Symbol !== 'undefined' ? '6+' : '5'));
+            
+            try {
+                const test = 'test';
+                addResult('✅ Variables work');
+                
+                const obj = {test: true};
+                addResult('✅ Objects work');
+                
+                const arr = [1, 2, 3];
+                addResult('✅ Arrays work');
+                
+                addResult('✅ All basic JavaScript tests PASSED!');
+            } catch(e) {
+                addResult('❌ JavaScript error: ' + e.message, 'error');
+            }
+        }
+
+        function testKnowledge() {
+            results.innerHTML = '';
+            addResult('🔍 Loading knowledge base...');
+            
+            // Try to load the knowledge base file
+            const script = document.createElement('script');
+            script.src = 'js/academic-knowledge-base.js';
+            
+            script.onload = function() {
+                addResult('✅ academic-knowledge-base.js loaded successfully!');
+                
+                if (typeof ACADEMIC_KNOWLEDGE_BASE !== 'undefined') {
+                    addResult('✅ ACADEMIC_KNOWLEDGE_BASE variable exists!');
+                    
+                    let count = 0;
+                    let subjects = [];
+                    for (const subject in ACADEMIC_KNOWLEDGE_BASE) {
+                        subjects.push(subject);
+                        for (const level in ACADEMIC_KNOWLEDGE_BASE[subject]) {
+                            count += Object.keys(ACADEMIC_KNOWLEDGE_BASE[subject][level]).length;
+                        }
+                    }
+                    addResult(`📊 Found ${count} answers across ${subjects.length} subjects: ${subjects.join(', ')}`);
+                    addResult('✅ Knowledge Base test PASSED!');
+                } else {
+                    addResult('❌ ACADEMIC_KNOWLEDGE_BASE not defined!', 'error');
+                }
+            };
+            
+            script.onerror = function() {
+                addResult('❌ Failed to load academic-knowledge-base.js!', 'error');
+                addResult('💡 Make sure the file exists in js/ folder', 'warning');
+            };
+            
+            document.head.appendChild(script);
+        }
+
+        function testBot() {
+            results.innerHTML = '';
+            addResult('🔍 Testing chatbot...');
+            
+            // Load knowledge base first
+            const script1 = document.createElement('script');
+            script1.src = 'js/academic-knowledge-base.js';
+            
+            script1.onload = function() {
+                addResult('✅ Step 1: Knowledge base loaded');
+                
+                // Load additional training
+                const script2 = document.createElement('script');
+                script2.src = 'js/additional-training-data.js';
+                
+                script2.onload = function() {
+                    addResult('✅ Step 2: Additional training loaded');
+                    
+                    // Load chatbot engine
+                    const script3 = document.createElement('script');
+                    script3.src = 'js/academic-chatbot-engine.js';
+                    
+                    script3.onload = function() {
+                        addResult('✅ Step 3: Chatbot engine loaded');
+                        
+                        setTimeout(function() {
+                            if (typeof window.academicBot !== 'undefined') {
+                                addResult('✅ Step 4: academicBot instance created!');
+                                
+                                try {
+                                    const stats = window.academicBot.getStats();
+                                    addResult(`📊 Bot stats: ${JSON.stringify(stats)}`);
+                                    addResult('✅ Chatbot test PASSED!');
+                                } catch(e) {
+                                    addResult('⚠️ Bot exists but getStats() failed: ' + e.message, 'warning');
+                                }
+                            } else {
+                                addResult('❌ academicBot not created!', 'error');
+                                addResult('💡 Check console for errors (F12)', 'warning');
+                            }
+                        }, 500);
+                    };
+                    
+                    script3.onerror = function() {
+                        addResult('❌ Failed to load academic-chatbot-engine.js!', 'error');
+                    };
+                    
+                    document.head.appendChild(script3);
+                };
+                
+                script2.onerror = function() {
+                    addResult('⚠️ additional-training-data.js failed (optional)', 'warning');
+                };
+                
+                document.head.appendChild(script2);
+            };
+            
+            script1.onerror = function() {
+                addResult('❌ Failed to load knowledge base!', 'error');
+            };
+            
+            document.head.appendChild(script1);
+        }
+
+        function openMain() {
+            addResult('🚀 Opening main page...');
+            window.open('index.html', '_blank');
+            addResult('💡 If new tab opened, main page should work!');
+        }
+
+        function showInfo() {
+            results.innerHTML = '';
+            addResult(`<b>Browser Info:</b>`);
+            addResult(`🌐 User Agent: ${navigator.userAgent}`);
+            addResult(`📱 Platform: ${navigator.platform}`);
+            addResult(`💻 Language: ${navigator.language}`);
+            addResult(`📍 File Protocol: ${window.location.protocol}`);
+            addResult(`📁 Current Path: ${window.location.pathname}`);
+            
+            if (window.location.protocol === 'file:') {
+                addResult('⚠️ You opened file directly (file://)', 'warning');
+                addResult('💡 This is OK for testing!', 'success');
+            } else {
+                addResult('✅ Running on a server (http:// or https://)', 'success');
+            }
+        }
+
+        // Auto-run tests on page load
+        window.onload = function() {
+            addResult('<b>🚀 Starting automatic tests...</b>');
+            testSimple();
+            setTimeout(testJS, 300);
+            setTimeout(function() {
+                testKnowledge();
+            }, 600);
+            setTimeout(function() {
+                testBot();
+            }, 1200);
+        };
+    </script>
+</body>
+</html>

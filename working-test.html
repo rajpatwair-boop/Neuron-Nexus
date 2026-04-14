@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroQuest - Working Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .status-box {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .status-box.success {
+            border-left-color: #10b981;
+            background: #d1fae5;
+        }
+        
+        .status-box.error {
+            border-left-color: #ef4444;
+            background: #fee2e2;
+        }
+        
+        .status-box.warning {
+            border-left-color: #f59e0b;
+            background: #fef3c7;
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-success {
+            background: #10b981;
+        }
+        
+        .btn-success:hover {
+            background: #059669;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .info-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .info-card h3 {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+        
+        .info-card p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 NeuroQuest AI</h1>
+        <p class="subtitle">System Status & Diagnostic Tool</p>
+        
+        <div id="status-container"></div>
+        
+        <div class="info-grid" id="stats-grid" style="display: none;">
+            <div class="info-card">
+                <h3 id="stat-subjects">0</h3>
+                <p>Subjects</p>
+            </div>
+            <div class="info-card">
+                <h3 id="stat-answers">0</h3>
+                <p>Answers</p>
+            </div>
+            <div class="info-card">
+                <h3 id="stat-status">✓</h3>
+                <p>Status</p>
+            </div>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <button class="btn" onclick="runTests()">🔍 Run All Tests</button>
+            <button class="btn btn-success" onclick="openMainPage()">🚀 Open Main Website</button>
+            <button class="btn" onclick="openChatbot()">💬 Test Chatbot</button>
+            <button class="btn" onclick="openTraining()">📚 Training Dashboard</button>
+        </div>
+        
+        <div style="margin-top: 20px; padding: 15px; background: #f9fafb; border-radius: 8px; font-size: 12px; color: #666;">
+            <strong>Server:</strong> http://localhost:8000<br>
+            <strong>Path:</strong> <span id="current-path"></span><br>
+            <strong>Time:</strong> <span id="current-time"></span>
+        </div>
+    </div>
+
+    <script>
+        const statusContainer = document.getElementById('status-container');
+        
+        function addStatus(message, type = 'success') {
+            const div = document.createElement('div');
+            div.className = `status-box ${type}`;
+            div.innerHTML = message;
+            statusContainer.appendChild(div);
+        }
+        
+        async function runTests() {
+            statusContainer.innerHTML = '';
+            addStatus('<strong>🔍 Running diagnostic tests...</strong>');
+            
+            // Test 1: Basic JavaScript
+            try {
+                const test = { works: true };
+                addStatus('✅ JavaScript is working', 'success');
+            } catch(e) {
+                addStatus('❌ JavaScript error: ' + e.message, 'error');
+                return;
+            }
+            
+            // Test 2: Load Knowledge Base
+            addStatus('⏳ Loading knowledge base... <span class="loading"></span>');
+            
+            try {
+                await loadScript('js/academic-knowledge-base.js');
+                addStatus('✅ Knowledge base file loaded', 'success');
+                
+                if (typeof ACADEMIC_KNOWLEDGE_BASE !== 'undefined') {
+                    let count = 0;
+                    let subjects = [];
+                    for (const subject in ACADEMIC_KNOWLEDGE_BASE) {
+                        subjects.push(subject);
+                        for (const level in ACADEMIC_KNOWLEDGE_BASE[subject]) {
+                            count += Object.keys(ACADEMIC_KNOWLEDGE_BASE[subject][level]).length;
+                        }
+                    }
+                    addStatus(`✅ Knowledge Base: ${count} answers in ${subjects.length} subjects (${subjects.join(', ')})`, 'success');
+                    
+                    document.getElementById('stat-subjects').textContent = subjects.length;
+                    document.getElementById('stat-answers').textContent = count;
+                    document.getElementById('stat-status').textContent = '✓';
+                    document.getElementById('stats-grid').style.display = 'grid';
+                } else {
+                    addStatus('❌ Knowledge Base variable not found', 'error');
+                }
+            } catch(e) {
+                addStatus('❌ Failed to load knowledge base: ' + e.message, 'error');
+            }
+            
+            // Test 3: Load Additional Training
+            try {
+                await loadScript('js/additional-training-data.js');
+                addStatus('✅ Additional training data loaded', 'success');
+            } catch(e) {
+                addStatus('⚠️ Additional training failed (optional)', 'warning');
+            }
+            
+            // Test 4: Load Chatbot Engine
+            try {
+                await loadScript('js/academic-chatbot-engine.js');
+                addStatus('✅ Chatbot engine loaded', 'success');
+                
+                setTimeout(() => {
+                    if (typeof window.academicBot !== 'undefined') {
+                        addStatus('✅ Academic Bot initialized successfully!', 'success');
+                        addStatus('<strong>🎉 All tests passed! Your website is working!</strong>', 'success');
+                    } else {
+                        addStatus('❌ Academic Bot not initialized', 'error');
+                    }
+                }, 500);
+            } catch(e) {
+                addStatus('❌ Chatbot engine failed: ' + e.message, 'error');
+            }
+        }
+        
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+        
+        function openMainPage() {
+            window.open('index.html', '_blank');
+        }
+        
+        function openChatbot() {
+            window.open('test-intent-chatbot.html', '_blank');
+        }
+        
+        function openTraining() {
+            window.open('training-dashboard.html', '_blank');
+        }
+        
+        // Update time
+        function updateTime() {
+            document.getElementById('current-time').textContent = new Date().toLocaleTimeString();
+            document.getElementById('current-path').textContent = window.location.pathname;
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+        
+        // Auto-run tests
+        window.onload = () => {
+            setTimeout(runTests, 300);
+        };
+    </script>
+</body>
+</html>

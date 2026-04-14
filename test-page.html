@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroQuest - Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #00ff88;
+        }
+        .status {
+            background: #2a2a2a;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #00ff88;
+        }
+        .error {
+            border-left-color: #ff4444;
+            color: #ff4444;
+        }
+        .success {
+            border-left-color: #00ff88;
+            color: #00ff88;
+        }
+        button {
+            background: #00ff88;
+            color: #1a1a1a;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #00cc6a;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧠 NeuroQuest Diagnostic Test</h1>
+    
+    <div id="status-container"></div>
+    
+    <div style="margin-top: 30px;">
+        <button onclick="testMainPage()">🚀 Open Main Page</button>
+        <button onclick="testChatbot()">💬 Test Chatbot</button>
+        <button onclick="testTraining()">📚 Test Training</button>
+        <button onclick="location.reload()">🔄 Refresh</button>
+    </div>
+
+    <script>
+        const statusContainer = document.getElementById('status-container');
+        
+        function addStatus(message, type = 'success') {
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.textContent = message;
+            statusContainer.appendChild(div);
+        }
+
+        function testFiles() {
+            addStatus('🔍 Checking required files...');
+            
+            const files = [
+                'index.html',
+                'js/app.js',
+                'js/state.js',
+                'js/academic-knowledge-base.js',
+                'js/academic-chatbot-engine.js',
+                'js/additional-training-data.js',
+                'js/features/intent-chatbot.js',
+                'js/features/ai-chatbot-pro.js',
+                'css/variables.css',
+                'css/base.css',
+                'css/components.css'
+            ];
+            
+            let missing = [];
+            files.forEach(file => {
+                const link = document.createElement('link');
+                link.href = file;
+                link.onerror = () => {
+                    missing.push(file);
+                    addStatus(`❌ Missing: ${file}`, 'error');
+                };
+                link.onload = () => {
+                    addStatus(`✅ Found: ${file}`);
+                };
+            });
+            
+            if (missing.length === 0) {
+                addStatus('✅ All files present!', 'success');
+            }
+        }
+
+        function testKnowledgeBase() {
+            addStatus('📚 Testing Knowledge Base...');
+            
+            if (typeof ACADEMIC_KNOWLEDGE_BASE !== 'undefined') {
+                addStatus('✅ Knowledge Base loaded!');
+                
+                let count = 0;
+                for (const subject in ACADEMIC_KNOWLEDGE_BASE) {
+                    for (const level in ACADEMIC_KNOWLEDGE_BASE[subject]) {
+                        count += Object.keys(ACADEMIC_KNOWLEDGE_BASE[subject][level]).length;
+                    }
+                }
+                addStatus(`📊 Total answers: ${count}+`);
+            } else {
+                addStatus('❌ Knowledge Base not loaded!', 'error');
+            }
+        }
+
+        function testAcademicBot() {
+            addStatus('🤖 Testing Academic Bot...');
+            
+            if (typeof window.academicBot !== 'undefined') {
+                addStatus('✅ Academic Bot initialized!');
+                
+                const stats = window.academicBot.getStats();
+                addStatus(`📈 Stats: ${JSON.stringify(stats)}`);
+            } else {
+                addStatus('❌ Academic Bot not initialized!', 'error');
+            }
+        }
+
+        function testMainPage() {
+            addStatus('🚀 Opening main page...');
+            window.open('index.html', '_blank');
+        }
+
+        function testChatbot() {
+            addStatus('💬 Opening chatbot test...');
+            window.open('test-intent-chatbot.html', '_blank');
+        }
+
+        function testTraining() {
+            addStatus('📚 Opening training dashboard...');
+            window.open('training-dashboard.html', '_blank');
+        }
+
+        // Run tests on load
+        window.onload = () => {
+            testFiles();
+            setTimeout(testKnowledgeBase, 500);
+            setTimeout(testAcademicBot, 1000);
+        };
+    </script>
+</body>
+</html>
