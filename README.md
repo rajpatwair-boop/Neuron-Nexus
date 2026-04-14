@@ -239,19 +239,5 @@ If you like this project:
 🚀 Level up your learning with Neuron Nexus 🎮
 
 
----
-
-If you want next-level 🔥 README (like top GitHub projects), I can add:
-
-badges (build, version, etc.)
-
-animated sections
-
-demo GIFs
-
-professional GitHub profile styling
-
-
-Just tell me 👍
 
 This is MY PROTOTYPE VIDEO LINK:https://drive.google.com/file/d/15oxROGuXK3RxJHaB0hC5_SX79A7I9HSh/view?usp=drive_link
