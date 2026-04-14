@@ -125,13 +125,14 @@ AI Layer: Adaptive learning logic
 
 📸 Screenshots
 
-(Add your project screenshots here)
-
 Dashboard
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/a4ef7a28-085b-4256-adc4-ff024115968a" />
 
 Battle Mode
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c972c6e3-4867-43d2-b36b-bdb6bd77402d" />
 
 Chat Interface
+<img width="506" height="738" alt="image" src="https://github.com/user-attachments/assets/c4e35a93-9703-475a-ab2b-135417c0a598" />
 
 Progress System
 
